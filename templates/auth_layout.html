@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Authentication{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="flex min-h-screen flex-1">
+    <div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+        <div class="flex items-center justify-center mb-6">
+            <img src="{% static 'Logo.webp' %}" alt="Logo" />
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+
+    <div class="relative hidden w-0 flex-1 lg:block">
+        <img src="{% static 'backImage .webp' %}" class="absolute inset-0 h-full w-full object-cover" alt="Background Image" />
+    </div>
+</body>
+</html>

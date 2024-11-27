@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        {# Messages Section #}
+        {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+            <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {# Header Section with Actions #}
+        <div class="flex justify-between items-start mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Rental Agreement Details</h1>
+                <p class="mt-2 text-gray-600">{{ agreement.estate.property_name }}</p>
+            </div>
+            <div class="flex space-x-3">
+                {% if request.user == agreement.owner and request.user.role == 'admin' %}
+                    <a href="{% url 'rental_agreements:update_rental_agreement' agreement.id %}" 
+                       class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Edit Agreement
+                    </a>
+                    <a href="{% url 'rental_agreements:update_rental_agreement_status' agreement.id %}" 
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Update Status
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Main Content #}
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            {# Status Banner #}
+            <div class="px-4 py-5 border-b border-gray-200 {% if agreement.status == 'active' %}bg-green-50{% elif agreement.status == 'pending' %}bg-yellow-50{% elif agreement.status == 'terminated' %}bg-red-50{% else %}bg-gray-50{% endif %}">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            Agreement Status: 
+                            <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full 
+                                {% if agreement.status == 'active' %}bg-green-100 text-green-800
+                                {% elif agreement.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                {% elif agreement.status == 'terminated' %}bg-red-100 text-red-800
+                                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {{ agreement.get_status_display }}
+                            </span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+            {# Agreement Details #}
+            <div class="px-4 py-5 sm:p-6">
+                <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Property</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ agreement.estate.property_name }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Property Address</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ agreement.estate.address }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Owner</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ agreement.owner.username }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Tenant</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ agreement.tenant.username }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Start Date</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ agreement.start_date|date:"F d, Y" }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">End Date</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ agreement.end_date|date:"F d, Y" }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Monthly Rent</dt>
+                        <dd class="mt-1 text-sm text-gray-900">${{ agreement.monthly_rent }}</dd>
+                    </div>
+
+                    <div class="sm:col-span-1">
+                        <dt class="text-sm font-medium text-gray-500">Security Deposit</dt>
+                        <dd class="mt-1 text-sm text-gray-900">${{ agreement.security_deposit }}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            {# Delete Section - Only visible to admin #}
+            {% if request.user == agreement.owner and request.user.role == 'admin' %}
+                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 border-t border-gray-200">
+                    <a href="{% url 'rental_agreements:delete_rental_agreement' agreement.id %}"
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Delete Agreement
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        {# Back Button #}
+        <div class="mt-6">
+            <a href="{% url 'rental_agreements:rental_agreement_list' %}" 
+               class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Back to Agreements
+            </a>
+        </div>
+
+        {# Additional Information Section #}
+        {% if agreement.status == 'pending' %}
+            <div class="mt-8 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-yellow-700">
+                            This agreement is pending approval from the property owner.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

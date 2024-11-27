@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white shadow rounded-lg p-6">
+            <h1 class="text-2xl font-bold mb-6">Update Agreement Status</h1>
+
+            {% if messages %}
+            <div class="mb-6">
+                {% for message in messages %}
+                <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-700{% elif message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {# Agreement Details #}
+            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                <h2 class="text-lg font-semibold mb-4">Agreement Details</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600">Estate</p>
+                        <p class="font-medium">{{ agreement.estate.property_name }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Tenant</p>
+                        <p class="font-medium">{{ agreement.tenant.get_full_name|default:agreement.tenant.username }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Current Status</p>
+                        <p class="inline-flex px-2 py-1 text-sm font-semibold rounded-full 
+                            {% if agreement.status == 'active' %}bg-green-100 text-green-800
+                            {% elif agreement.status == 'pending' %}bg-yellow-100 text-yellow-800
+                            {% elif agreement.status == 'terminated' %}bg-red-100 text-red-800
+                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ agreement.get_status_display }}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Monthly Rent</p>
+                        <p class="font-medium">${{ agreement.monthly_rent }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    {% if field.name == 'status' %}
+                        <div>
+                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                New Status
+                            </label>
+                            <div class="mt-1">
+                                {{ field.errors }}
+                                <select id="{{ field.id_for_label }}" 
+                                        name="{{ field.html_name }}"
+                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                    {% for value, label in field.field.choices %}
+                                        <option value="{{ value }}" {% if value == field.value %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% if field.help_text %}
+                                <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="flex justify-end space-x-4">
+                    <a href="{% url 'rental_agreements:rental_agreement_detail' agreement.id %}"
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Update Status
+                    </button>
+                </div>
+            </form>
+
+            {% if agreement.status == 'pending' %}
+                <div class="mt-6 border-t pt-6">
+                    <div class="flex justify-between">
+                        <form method="post" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="active">
+                            <button type="submit"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                Approve & Activate
+                            </button>
+                        </form>
+                        <form method="post" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="terminated">
+                            <button type="submit"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Reject & Terminate
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

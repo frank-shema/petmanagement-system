@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+<!-- {% load custom_filters %} -->
+
+{% block title %}
+    {% if form.instance.pk %}
+        Update Estate
+    {% else %}
+        Create New Real Estate
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h1 class="text-xl font-bold text-blue-600 text-center mb-6">
+        {% if form.instance.pk %}
+            Update Estate
+        {% else %}
+            Create New Estate
+        {% endif %}
+    </h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="space-y-4">
+            {{ form.non_field_errors }}
+            <div>
+                <label for="property_name" class="block text-sm font-medium text-gray-700">Property Name</label>
+                {{ form.property_name|add_class:"w-full p-3 border border-gray-300 rounded-lg" }}
+            </div>
+
+            <div>
+                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                {{ form.address|add_class:"w-full p-3 border border-gray-300 rounded-lg" }}
+            </div>
+            
+            <div>
+                <label for="property_type" class="block text-sm font-medium text-gray-700">Property Type</label>
+                {{ form.property_type|add_class:"w-full p-3 border border-gray-300 rounded-lg" }}
+            </div>
+
+            <div>
+                <label for="rent_amount" class="block text-sm font-medium text-gray-700">Rent Amount</label>
+                {{ form.rent_amount|add_class:"w-full p-3 border border-gray-300 rounded-lg" }}
+            </div>
+            <div>
+                <label for="property_image" class="block text-sm font-medium text-gray-700">Upload Image</label>
+                {{ form.property_image|add_class:"w-full p-3 border border-gray-300 rounded-lg" }}  <!-- Add the image field -->
+            </div>
+
+            <div class="flex flex-col">
+                <button type="submit" class="bg-blue-600 text-white p-3 rounded-lg">
+                    {% if form.instance.pk %}
+                        Update Property
+                    {% else %}
+                        Create Property
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

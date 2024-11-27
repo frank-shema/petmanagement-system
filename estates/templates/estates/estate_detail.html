@@ -1,0 +1,89 @@
+{% extends "base.html" %} {% block title %} Estate Listings {% endblock %} 
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+  <!-- Display estate property name as the title -->
+  <h2 class="text-2xl font-bold text-gray-800 mb-4">
+    {{ estate.property_name }}
+  </h2>
+
+  <!-- Display the property image if it exists -->
+  {% if estate.property_image %}
+  <img
+    class="w-full h-[300px] rounded-lg mb-4"
+    src="{{ estate.property_image.url }}"
+    alt="Image of {{ estate.property_name }}"
+  />
+  {% else %}
+  <p class="text-gray-500 italic">No image available.</p>
+  {% endif %}
+
+  <!-- Display estate details -->
+  <p class="text-base text-gray-700 mb-2">
+    <span class="font-semibold">Address:</span> {{ estate.address }}
+  </p>
+  <p class="text-base text-gray-700 mb-2">
+    <span class="font-semibold">Owner:</span> {{ estate.owner.get_full_name|default:estate.owner.username }}
+  </p>
+  <p class="text-base text-gray-700 mb-2">
+    <span class="font-semibold">Property Type:</span> {{ estate.property_type }}
+  </p>
+  <p class="text-base text-gray-700 mb-2">
+    <span class="font-semibold">Rent Amount:</span> ${{ estate.rent_amount }}
+  </p>
+  {% if request.user.role == 'client' and estate.is_available %}
+  <div class="mt-6">
+    <a
+      href="{% url 'rental_agreements:create_rental_agreement' estate.id %}"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      Request to Rent
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- for admin things -->
+{% if request.user.role == 'admin' and request.user == estate.owner %}
+  <div class="mt-8">
+    <h3 class="text-lg font-medium text-gray-900">Rental Agreements</h3>
+
+    {% with agreements=estate.rental_agreements.all %}
+      {% if agreements %}
+      <div class="mt-4 bg-white shadow overflow-hidden sm:rounded-lg">
+        <ul class="divide-y divide-gray-200">
+          {% for agreement in agreements %}
+          <li class="px-4 py-4 sm:px-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-900">
+                  Tenant: {{ agreement.tenant.get_full_name }}
+                </p>
+                <p class="text-sm text-gray-500">
+                  {{ agreement.start_date|date:"M d, Y" }} - {{ agreement.end_date|date:"M d, Y" }}
+                </p>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                  {% if agreement.status == 'active' %}bg-green-100 text-green-800 
+                  {% elif agreement.status == 'pending' %}bg-yellow-100 text-yellow-800 
+                  {% elif agreement.status == 'terminated' %}bg-red-100 text-red-800 
+                  {% else %}bg-gray-100 text-gray-800{% endif %}">
+                  {{ agreement.get_status_display }}
+                </span>
+                <a href="{% url 'rental_agreements:rental_agreement_detail' agreement.id %}"
+                  class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+                  View
+                </a>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% else %}
+      <p class="mt-4 text-sm text-gray-500">No rental agreements for this property yet.</p>
+      {% endif %}
+    {% endwith %}
+  </div>
+{% endif %}
+</div>
+{% endblock %}
