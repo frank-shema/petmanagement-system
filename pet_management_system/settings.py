@@ -73,7 +73,7 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 
-ROOT_URLCONF = 'real_estate_management.urls'
+ROOT_URLCONF = 'pet_management_system.urls'
 
 TEMPLATES = [
     {
@@ -92,15 +92,15 @@ TEMPLATES = [
 ]
 
 LOGIN_URL = '/api/auth/login/'
-WSGI_APPLICATION = 'real_estate_management.wsgi.application'
+WSGI_APPLICATION = 'pet_management_system.wsgi.application'
 
 
-# Database
+# # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL backend
-        'NAME': 'real_estate_management',           # Name of your PostgreSQL database
+        'NAME': 'pet_management_system',           # Name of your PostgreSQL database
         'USER': 'postgres',                         # PostgreSQL username
         'PASSWORD': 'db_passcode',                # PostgreSQL password
         'HOST': 'localhost',                        # Host where PostgreSQL is running
@@ -108,6 +108,12 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite 3',
+#     }
+# }
 
 
 # Password validation

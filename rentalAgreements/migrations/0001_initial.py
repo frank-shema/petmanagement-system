@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('monthly_rent', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('security_deposit', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('status', models.CharField(choices=[('pending', 'Pending'), ('active', 'Active'), ('terminated', 'Terminated'), ('expired', 'Expired')], db_index=True, default='pending', max_length=20)),
-                ('estate', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rental_agreements', to='estates.estate')),
+                ('estate', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='pet_agreements', to='estates.estate')),
             ],
         ),
     ]

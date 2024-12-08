@@ -17,16 +17,16 @@
         {# Header Section with Actions #}
         <div class="flex justify-between items-start mb-6">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Rental Agreement Details</h1>
+                <h1 class="text-3xl font-bold text-gray-900">Pet Agreement Details</h1>
                 <p class="mt-2 text-gray-600">{{ agreement.estate.property_name }}</p>
             </div>
             <div class="flex space-x-3">
                 {% if request.user == agreement.owner and request.user.role == 'admin' %}
-                    <a href="{% url 'rental_agreements:update_rental_agreement' agreement.id %}" 
+                    <a href="{% url 'pet_agreements:update_rental_agreement' agreement.id %}"
                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Edit Agreement
                     </a>
-                    <a href="{% url 'rental_agreements:update_rental_agreement_status' agreement.id %}" 
+                    <a href="{% url 'pet_agreements:update_rental_agreement_status' agreement.id %}"
                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Update Status
                     </a>
@@ -58,12 +58,12 @@
             <div class="px-4 py-5 sm:p-6">
                 <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                     <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Property</dt>
+                        <dt class="text-sm font-medium text-gray-500">Pet</dt>
                         <dd class="mt-1 text-sm text-gray-900">{{ agreement.estate.property_name }}</dd>
                     </div>
 
                     <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Property Address</dt>
+                        <dt class="text-sm font-medium text-gray-500">Pet Address</dt>
                         <dd class="mt-1 text-sm text-gray-900">{{ agreement.estate.address }}</dd>
                     </div>
 
@@ -102,7 +102,7 @@
             {# Delete Section - Only visible to admin #}
             {% if request.user == agreement.owner and request.user.role == 'admin' %}
                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 border-t border-gray-200">
-                    <a href="{% url 'rental_agreements:delete_rental_agreement' agreement.id %}"
+                    <a href="{% url 'pet_agreements:delete_rental_agreement' agreement.id %}"
                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         Delete Agreement
                     </a>
@@ -112,7 +112,7 @@
 
         {# Back Button #}
         <div class="mt-6">
-            <a href="{% url 'rental_agreements:rental_agreement_list' %}" 
+            <a href="{% url 'pet_agreements:rental_agreement_list' %}"
                class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -132,7 +132,7 @@
                     </div>
                     <div class="ml-3">
                         <p class="text-sm text-yellow-700">
-                            This agreement is pending approval from the property owner.
+                            This agreement is pending approval from the Pet owner.
                         </p>
                     </div>
                 </div>

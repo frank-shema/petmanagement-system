@@ -21,7 +21,7 @@
                 <h2 class="text-lg font-semibold mb-4">Agreement Details</h2>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <p class="text-sm text-gray-600">Estate</p>
+                        <p class="text-sm text-gray-600">Pet</p>
                         <p class="font-medium">{{ agreement.estate.property_name }}</p>
                     </div>
                     <div>
@@ -74,7 +74,7 @@
                 {% endfor %}
 
                 <div class="flex justify-end space-x-4">
-                    <a href="{% url 'rental_agreements:rental_agreement_detail' agreement.id %}"
+                    <a href="{% url 'pet_agreements:rental_agreement_detail' agreement.id %}"
                        class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Cancel
                     </a>

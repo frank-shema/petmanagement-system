@@ -5,8 +5,28 @@
     <div class="max-w-3xl mx-auto">
         {# Header Section #}
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Create Rental Agreement</h1>
-            <p class="mt-2 text-gray-600">for {{ estate.property_name }}</p>
+            <h1 class="text-3xl font-bold text-gray-900">Update Rental Agreement</h1>
+            <p class="mt-2 text-gray-600">
+                Agreement for {{ agreement.estate.property_name }} - 
+                <span class="font-medium">Tenant: {{ agreement.tenant.username }}</span>
+            </p>
+        </div>
+
+        {# Current Status Display #}
+        <div class="mb-6 bg-gray-50 rounded-lg p-4 flex items-center justify-between">
+            <div>
+                <span class="text-sm text-gray-500">Current Status:</span>
+                <span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                    {% if agreement.status == 'active' %}bg-green-100 text-green-800
+                    {% elif agreement.status == 'pending' %}bg-yellow-100 text-yellow-800
+                    {% elif agreement.status == 'terminated' %}bg-red-100 text-red-800
+                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                    {{ agreement.get_status_display }}
+                </span>
+            </div>
+            <div class="text-sm text-gray-500">
+                Created: {{ agreement.created_at|date:"M d, Y" }}
+            </div>
         </div>
 
         {# Messages Section #}
@@ -40,7 +60,7 @@
                                class="mt-1 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
                                       {% if field.errors %}border-red-300{% endif %}">
                     
-                    {# Decimal Fields (monthly_rent and security_deposit) #}
+                    {# Decimal Fields #}
                     {% elif field.name == 'monthly_rent' or field.name == 'security_deposit' %}
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -54,6 +74,19 @@
                                    class="block w-full p-3 border border-gray-300 rounded-lg pl-7 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
                                           {% if field.errors %}border-red-300{% endif %}">
                         </div>
+
+                    {# Status Field #}
+                    {% elif field.name == 'status' %}
+                        <select name="{{ field.name }}"
+                                id="{{ field.id_for_label }}"
+                                class="mt-1 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
+                                       {% if field.errors %}border-red-300{% endif %}">
+                            {% for value, label in field.field.choices %}
+                                <option value="{{ value }}" {% if value == field.value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
                     
                     {# Default Field Rendering #}
                     {% else %}
@@ -73,30 +106,31 @@
                 {% endfor %}
 
                 {# Form Actions #}
-                <div class="flex items-center justify-end space-x-4 pt-4">
-                    <a href="{% url 'rental_agreements:rental_agreement_list' %}" 
+                <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                    <a href="{% url 'pet_agreements:rental_agreement_detail' agreement.id %}"
                        class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Cancel
                     </a>
                     <button type="submit"
                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Create Agreement
+                        Update Agreement
                     </button>
                 </div>
             </form>
         </div>
 
-        {# Additional Information #}
-        <div class="mt-8 bg-blue-50 border-l-4 border-blue-400 p-4">
+        {# Warning Section #}
+        <div class="mt-8 bg-yellow-50 border-l-4 border-yellow-400 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm text-blue-700">
-                        Once submitted, your rental agreement will be pending until approved by the property owner.
+                    <p class="text-sm text-yellow-700">
+                        Changes to this agreement will be recorded and may affect the terms of the rental contract.
+                        Please review all changes carefully before submitting.
                     </p>
                 </div>
             </div>

@@ -17,10 +17,10 @@
     <!-- Estate Stats (Admin Only) -->
     {% if is_admin %}
     <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4">Estates Overview</h3>
+        <h3 class="text-xl font-semibold mb-4">Pets Overview</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white rounded-lg shadow p-4">
-                <h5 class="text-gray-600 text-sm font-medium">Total Estates</h5>
+                <h5 class="text-gray-600 text-sm font-medium">Total Pets</h5>
                 <p class="text-2xl font-bold text-gray-800">{{ total_estates }}</p>
             </div>
             <div class="bg-white rounded-lg shadow p-4">
@@ -28,13 +28,13 @@
                 <p class="text-2xl font-bold text-green-600">{{ available_estates }}</p>
             </div>
             <div class="bg-white rounded-lg shadow p-4">
-                <h5 class="text-gray-600 text-sm font-medium">Rented</h5>
+                <h5 class="text-gray-600 text-sm font-medium">Pets rental</h5>
                 <p class="text-2xl font-bold text-blue-600">{{ rented_estates }}</p>
             </div>
         </div>
         <div class="flex items-center gap-5 pt-5">
             <div class="w-[50%] flex flex-col bg-white p-3 rounded-sm overflow-hidden">
-                <h5 class="text-gray-600 text-sm font-medium">Estates</h5>
+                <h5 class="text-gray-600 text-sm font-medium">Pets</h5>
                 <div id="estate-type-chart" style="height: 300px; width: 100%;"></div>
             </div>
             <div class="w-[50%] bg-white p-3 rounded-sm overflow-hidden">
@@ -72,12 +72,12 @@
         {% if is_admin %}
         <!-- Recent Estates Table -->
         <div>
-            <h3 class="text-xl font-semibold mb-4">Recent Estates</h3>
+            <h3 class="text-xl font-semibold mb-4">Recent Pets</h3>
             <div class="overflow-x-auto bg-white rounded-lg shadow">
                 <table class="min-w-full table-auto">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pet Name</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -110,12 +110,12 @@
 
         <!-- Recent Agreements Table -->
         <div>
-            <h3 class="text-xl font-semibold mb-4">Recent Agreements</h3>
+            <h3 class="text-xl font-semibold mb-4">Recent Pets Agreements</h3>
             <div class="overflow-x-auto bg-white rounded-lg shadow">
                 <table class="min-w-full table-auto">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estate</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pets</th>
                             {% if is_admin %}
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tenant</th>
                             {% else %}
@@ -146,7 +146,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{% url 'rental_agreements:rental_agreement_detail' agreement.id %}" 
+                                <a href="{% url 'pet_agreements:rental_agreement_detail' agreement.id %}"
                                    class="text-blue-600 hover:text-blue-900">View</a>
                             </td>
                         </tr>

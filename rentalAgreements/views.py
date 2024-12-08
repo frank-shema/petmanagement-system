@@ -29,11 +29,11 @@ def create_rental_agreement(request, estate_id):
             rental_agreement.status = 'pending'  # Set initial status to pending
             rental_agreement.save()
             messages.success(request, "Rental agreement created successfully. Waiting for owner approval.")
-            return redirect('rental_agreements:rental_agreement_detail', agreement_id=rental_agreement.id)
+            return redirect('pet_agreements:rental_agreement_detail', agreement_id=rental_agreement.id)
     else:
         form = RentalAgreementForm()
 
-    return render(request, 'rental_agreements/create_agreement.html', {'form': form, 'estate': estate})
+    return render(request, 'pet_agreements/create_agreement.html', {'form': form, 'estate': estate})
 
 
 @login_required
@@ -43,7 +43,7 @@ def update_rental_agreement(request, agreement_id):
     # Check if the user is the owner of the estate
     if request.user != rental_agreement.owner or request.user.role != 'admin':
         messages.error(request, "Only the owner of the estate can update the rental agreement.")
-        return redirect('rental_agreements:rental_agreement_detail', agreement_id=agreement_id)
+        return redirect('pet_agreements:rental_agreement_detail', agreement_id=agreement_id)
 
     if request.method == 'POST':
         form = RentalAgreementForm(request.POST, instance=rental_agreement)
@@ -58,7 +58,7 @@ def update_rental_agreement(request, agreement_id):
                 updated_agreement.save()
                 messages.success(request, "Rental agreement updated successfully.")
             
-            return redirect('rental_agreements:rental_agreement_detail', agreement_id=agreement_id)
+            return redirect('pet_agreements:rental_agreement_detail', agreement_id=agreement_id)
     else:
         form = RentalAgreementForm(instance=rental_agreement)
 
@@ -66,7 +66,7 @@ def update_rental_agreement(request, agreement_id):
         'form': form,
         'agreement': rental_agreement
     }
-    return render(request, 'rental_agreements/update_agreement.html', context)
+    return render(request, 'pet_agreements/update_agreement.html', context)
 
 
 @login_required
@@ -76,7 +76,7 @@ def update_rental_agreement_status(request, agreement_id):
     # Check if the user is the owner of the estate and an admin
     if request.user != rental_agreement.owner or request.user.role != 'admin':
         messages.error(request, "Only the owner of the estate can update the rental agreement status.")
-        return redirect('rental_agreements:rental_agreement_detail', agreement_id=agreement_id)
+        return redirect('pet_agreements:rental_agreement_detail', agreement_id=agreement_id)
 
     if request.method == 'POST':
         # Handle quick action buttons
@@ -97,7 +97,7 @@ def update_rental_agreement_status(request, agreement_id):
                 rental_agreement.save()
                 messages.success(request, f"Rental agreement status updated to {new_status}.")
             
-            return redirect('rental_agreements:rental_agreement_detail', agreement_id=agreement_id)
+            return redirect('pet_agreements:rental_agreement_detail', agreement_id=agreement_id)
         
         # Handle form submission
         form = RentalAgreementForm(request.POST, instance=rental_agreement)
@@ -118,7 +118,7 @@ def update_rental_agreement_status(request, agreement_id):
                 rental_agreement.save()
                 messages.success(request, f"Rental agreement status updated to {new_status}.")
             
-            return redirect('rental_agreements:rental_agreement_detail', agreement_id=agreement_id)
+            return redirect('pet_agreements:rental_agreement_detail', agreement_id=agreement_id)
     else:
         # Create a form with only the status field
         class StatusOnlyForm(ModelForm):
@@ -132,7 +132,7 @@ def update_rental_agreement_status(request, agreement_id):
         'form': form,
         'agreement': rental_agreement
     }
-    return render(request, 'rental_agreements/update_agreement_status.html', context)
+    return render(request, 'pet_agreements/update_agreement_status.html', context)
 
 
 @login_required
@@ -144,7 +144,7 @@ def rental_agreement_detail(request, agreement_id):
         messages.error(request, "You don't have permission to view this rental agreement.")
         return redirect('estate_listings')
 
-    return render(request, 'rental_agreements/agreement_detail.html', {'agreement': rental_agreement})
+    return render(request, 'pet_agreements/agreement_detail.html', {'agreement': rental_agreement})
 
 @login_required
 def delete_rental_agreement(request, agreement_id):
@@ -153,14 +153,14 @@ def delete_rental_agreement(request, agreement_id):
     # Ensure only the owner can delete the agreement
     if request.user != rental_agreement.owner or request.user.role != 'admin':
         messages.error(request, "Only the owner of the estate can delete the rental agreement.")
-        return redirect('rental_agreements:rental_agreement_detail', agreement_id=agreement_id)
+        return redirect('pet_agreements:rental_agreement_detail', agreement_id=agreement_id)
 
     if request.method == 'POST':
         rental_agreement.delete()
         messages.success(request, "Rental agreement has been deleted successfully.")
-        return redirect('rental_agreements:rental_agreement_list')
+        return redirect('pet_agreements:rental_agreement_list')
     else:
-        return redirect('rental_agreements:rental_agreement_list')
+        return redirect('pet_agreements:rental_agreement_list')
 
 @login_required
 def rental_agreement_list(request):
@@ -210,7 +210,7 @@ def rental_agreement_list(request):
         messages.error(request, "You don't have permission to view rental agreements.")
         return redirect('estate_listings')
 
-    return render(request, 'rental_agreements/agreement_list.html', context)
+    return render(request, 'pet_agreements/agreement_list.html', context)
 
 # getting the rental agreements in json format
 class RentalAgreementListView(APIView):

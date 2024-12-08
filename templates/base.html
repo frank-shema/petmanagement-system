@@ -69,7 +69,7 @@
             <a
               href="{% url 'estate_listings' %}"
               class="bg-blue-900 text-white group flex items-center px-2 py-4 text-sm font-medium rounded-md"
-              >Estate</a
+              >Pets</a
             >
           </nav>
         </div>
@@ -82,12 +82,12 @@
       >
         <div class="flex items-center justify-center py-4">
           <img
-            src="{% static 'Logo.png' %}"
-            class="h-[100px] w-[100px]"
+            src="{% static 'Logo.webp' %}"
+            class="w-[120px] h-[100px] rounded-full"
             alt="Background Image"
           />
           <h2 class="text-sm font-semibold text-white">
-            Real Estate management
+            Pet Management System
           </h2>
         </div>
         <nav class="mt-5 flex-1 space-y-1">
@@ -105,16 +105,16 @@
             class="text-white group flex items-center px-2 py-4 text-sm font-medium rounded-md"
             >
             <img class="h-8 w-8 rounded-full mr-2"
-              src="https://cdn-icons-png.freepik.com/512/8123/8123123.png?ga=GA1.1.566292907.1724415764"
+              src="{% static 'dog_13748949.png' %}"
               alt="estate"/>
-            Estate</a
+            Pets</a
           >
           <a
-            href="{% url 'rental_agreements:rental_agreement_list' %}"
+            href="{% url 'pet_agreements:rental_agreement_list' %}"
             class="text-white group flex items-center px-2 py-4 text-sm font-medium rounded-md"
             >
             <img class="h-8 w-8 rounded-full mr-2"
-              src="https://cdn-icons-png.freepik.com/512/8123/8123123.png?ga=GA1.1.566292907.1724415764"
+              src="{% static 'dog_13748949.png' %}"
               alt="estate"/>
             Agreements</a
           >

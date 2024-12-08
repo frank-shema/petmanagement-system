@@ -2,7 +2,7 @@ from django.urls import path
 from .views import create_rental_agreement, rental_agreement_list, update_rental_agreement \
     , update_rental_agreement_status, rental_agreement_detail, delete_rental_agreement,RentalAgreementListView
 
-app_name = 'rental_agreements'
+app_name = 'pet_agreements'
 
 urlpatterns = [
      path('list/', rental_agreement_list, name='rental_agreement_list'),

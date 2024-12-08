@@ -3,9 +3,9 @@
 
 {% block title %}
     {% if form.instance.pk %}
-        Update Estate
+        Update Pets
     {% else %}
-        Create New Real Estate
+        Create New Pets
     {% endif %}
 {% endblock %}
 
@@ -13,9 +13,9 @@
 <div class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
     <h1 class="text-xl font-bold text-blue-600 text-center mb-6">
         {% if form.instance.pk %}
-            Update Estate
+            Update Pets
         {% else %}
-            Create New Estate
+            Create New Pets
         {% endif %}
     </h1>
 
@@ -24,7 +24,7 @@
         <div class="space-y-4">
             {{ form.non_field_errors }}
             <div>
-                <label for="property_name" class="block text-sm font-medium text-gray-700">Property Name</label>
+                <label for="property_name" class="block text-sm font-medium text-gray-700">Pet Name</label>
                 {{ form.property_name|add_class:"w-full p-3 border border-gray-300 rounded-lg" }}
             </div>
 
@@ -34,12 +34,12 @@
             </div>
             
             <div>
-                <label for="property_type" class="block text-sm font-medium text-gray-700">Property Type</label>
+                <label for="property_type" class="block text-sm font-medium text-gray-700">Pet Type</label>
                 {{ form.property_type|add_class:"w-full p-3 border border-gray-300 rounded-lg" }}
             </div>
 
             <div>
-                <label for="rent_amount" class="block text-sm font-medium text-gray-700">Rent Amount</label>
+                <label for="rent_amount" class="block text-sm font-medium text-gray-700">Pet Amount</label>
                 {{ form.rent_amount|add_class:"w-full p-3 border border-gray-300 rounded-lg" }}
             </div>
             <div>

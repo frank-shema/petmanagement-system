@@ -12,7 +12,7 @@ class RentalAgreement(models.Model):
     estate = models.ForeignKey(
         'estates.Estate',  # Use string reference instead of direct import
         on_delete=models.CASCADE,
-        related_name='rental_agreements'
+        related_name='pet_agreements'
     )
     tenant = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
