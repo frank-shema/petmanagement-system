@@ -14,10 +14,12 @@ class Estate(models.Model):
         """Check if the estate is available for rent"""
         return not self.pet_agreements.filter(status='active').exists()  # Corrected related_name
 
+
     @property
     def current_agreement(self):
         """Get the current active rental agreement if any"""
         return self.pet_agreements.filter(status='active').first()  # Corrected related_name
+
 
     def __str__(self):
         return self.property_name

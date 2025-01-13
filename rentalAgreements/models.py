@@ -14,12 +14,14 @@ class RentalAgreement(models.Model):
         on_delete=models.CASCADE,
         related_name='pet_agreements'
     )
+
     tenant = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
         limit_choices_to={'role': 'client'}, 
         related_name='agreements'
     )
+
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE, 
@@ -36,6 +38,7 @@ class RentalAgreement(models.Model):
         default='pending',
         db_index=True
     )
+
 
     def __str__(self):
         return f"Rental Agreement for {self.estate.property_name} - {self.tenant.username}"
